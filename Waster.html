@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Waster Max | Ultimate Bandwidth Simuator</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f43f5e;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+
+        body.dark {
+            background-color: var(--darker);
+            color: var(--light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--gray);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .dark .card {
+            background-color: #1e293b;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .dark input[type="number"] {
+            background-color: #334155;
+            border-color: #475569;
+            color: white;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background-color: #f1f5f9;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .dark .stat-card {
+            background-color: #334155;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .dark .progress-bar {
+            background-color: #334155;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+
+        .ad-container {
+            background-color: #f1f5f9;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .dark .ad-container {
+            background-color: #334155;
+            border-color: #475569;
+        }
+
+        .ad-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .ad-content {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .dark .modal-content {
+            background-color: var(--dark);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .captcha-slider {
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .captcha-target {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .dark .captcha-target {
+            background-color: #334155;
+        }
+
+        .target-marker {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 40px;
+            background-color: var(--success);
+            border-radius: 4px;
+            left: 30%;
+        }
+
+        .wait-message {
+            text-align: center;
+            padding: 1rem;
+            background-color: #fef3c7;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+            color: #92400e;
+        }
+
+        .dark .wait-message {
+            background-color: #451a03;
+            color: #fde68a;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Data Waster</div>
+            <button class="theme-toggle" id="themeToggle">🌓</button>
+        </header>
+
+        <div class="card">
+            <h1>Data Wasting Controls</h1>
+            <div class="form-group">
+                <label for="dataAmount">How much data do you want to waste? (MB)</label>
+                <input type="number" id="dataAmount" placeholder="0 for infinite">
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" id="startBtn">Start Wasting Data</button>
+                <button class="btn btn-danger" id="stopBtn" disabled>Stop</button>
+            </div>
+
+            <div id="waitMessage" class="wait-message" style="display: none;">
+                Please wait <span id="countdown">5</span> seconds before starting...
+            </div>
+        </div>
+
+        <div class="card">
+            <h1>Data Wasting Statistics</h1>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value" id="dataUsed">0</div>
+                    <div class="stat-label">MB Wasted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="timeElapsed">0</div>
+                    <div class="stat-label">Seconds</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="bandwidth">0</div>
+                    <div class="stat-label">Mbps</div>
+                </div>
+            </div>
+
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>0%</span>
+                    <span id="progressText">0 of 0 MB</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-container" id="adContainer">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content">Ad content will appear here</div>
+        </div>
+    </div>
+
+    <div class="modal" id="captchaModal">
+        <div class="modal-content">
+            <h1>Human Verification</h1>
+            <p>Please complete this puzzle to verify you're not a robot.</p>
+            
+            <div class="captcha-target">
+                <div class="target-marker" id="targetMarker"></div>
+            </div>
+            
+            <input type="range" class="captcha-slider" id="captchaSlider" min="0" max="100" value="0">
+            
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span>Slide to match</span>
+                <span id="captchaStatus" style="color: var(--gray);">Not matched</span>
+            </div>
+            
+            <button class="btn btn-primary" id="verifyBtn" disabled>Verify</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const dataAmountInput = document.getElementById('dataAmount');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const dataUsedEl = document.getElementById('dataUsed');
+        const timeElapsedEl = document.getElementById('timeElapsed');
+        const bandwidthEl = document.getElementById('bandwidth');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const adContainer = document.getElementById('adContainer');
+        const captchaModal = document.getElementById('captchaModal');
+        const captchaSlider = document.getElementById('captchaSlider');
+        const targetMarker = document.getElementById('targetMarker');
+        const captchaStatus = document.getElementById('captchaStatus');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const waitMessage = document.getElementById('waitMessage');
+        const countdownEl = document.getElementById('countdown');
+
+        // App State
+        let isRunning = false;
+        let startTime = null;
+        let timerInterval = null;
+        let dataInterval = null;
+        let verified = false;
+        let waitTimer = 5;
+        let countdownInterval = null;
+        
+        // Generate random target position for CAPTCHA
+        const targetPosition = Math.floor(Math.random() * 60) + 20; // 20-80%
+        targetMarker.style.left = `${targetPosition}%`;
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Check saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+        }
+
+        // CAPTCHA Slider
+        captchaSlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            const difference = Math.abs(value - targetPosition);
+            
+            if (difference < 5) {
+                captchaStatus.textContent = "✓ Matched!";
+                captchaStatus.style.color = "var(--success)";
+                verifyBtn.disabled = false;
+            } else {
+                captchaStatus.textContent = "Not matched";
+                captchaStatus.style.color = "var(--gray)";
+                verifyBtn.disabled = true;
+            }
+        });
+
+        // Verify CAPTCHA
+        verifyBtn.addEventListener('click', () => {
+            verified = true;
+            captchaModal.classList.remove('active');
+            
+            // Show wait message
+            waitMessage.style.display = 'block';
+            countdownInterval = setInterval(() => {
+                waitTimer--;
+                countdownEl.textContent = waitTimer;
+                
+                if (waitTimer <= 0) {
+                    clearInterval(countdownInterval);
+                    waitMessage.style.display = 'none';
+                }
+            }, 1000);
+        });
+
+        // Start Data Wasting
+        startBtn.addEventListener('click', () => {
+            if (!verified) {
+                captchaModal.classList.add('active');
+                return;
+            }
+            
+            if (waitTimer > 0) {
+                alert(`Please wait ${waitTimer} seconds before starting`);
+                return;
+            }
+            
+            const dataAmount = parseFloat(dataAmountInput.value) || 0;
+            
+            isRunning = true;
+            startTime = new Date();
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            
+            // Show progress bar if not infinite
+            if (dataAmount > 0) {
+                progressContainer.style.display = 'block';
+                progressText.textContent = `0 of ${dataAmount} MB`;
+            }
+            
+            // Show ad
+            showAd();
+            
+            // Start timer
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Simulate data usage
+            dataInterval = setInterval(() => {
+                const dataChunk = Math.random() * 10; // Random chunk size 0-10 MB
+                const currentData = parseFloat(dataUsedEl.textContent) + dataChunk;
+                
+                dataUsedEl.textContent = currentData.toFixed(2);
+                bandwidthEl.textContent = (dataChunk * 8).toFixed(2); // Convert to Mbps
+                
+                // Update progress if not infinite
+                if (dataAmount > 0) {
+                    const progress = (currentData / dataAmount) * 100;
+                    progressFill.style.width = `${Math.min(progress, 100)}%`;
+                    progressText.textContent = `${currentData.toFixed(2)} of ${dataAmount} MB`;
+                    
+                    // Check if we've reached the limit
+                    if (currentData >= dataAmount) {
+                        stopDataWaste();
+                        showAd();
+                        alert(`Finished wasting ${dataAmount} MB of data!`);
+                    }
+                }
+            }, 300);
+        });
+
+        // Stop Data Wasting
+        stopBtn.addEventListener('click', stopDataWaste);
+
+        function stopDataWaste() {
+            clearInterval(timerInterval);
+            clearInterval(dataInterval);
+            isRunning = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            showAd();
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const seconds = Math.floor((now - startTime) / 1000);
+            timeElapsedEl.textContent = seconds;
+        }
+
+        function showAd() {
+            // Simple ad display - in a real app you'd use AdSense code here
+            adContainer.style.display = 'block';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                adContainer.style.display = 'none';
+            }, 5000);
+        }
+
+        // Simulate downloading dummy data
+        function downloadDummyData(sizeMB) {
+            const size = sizeMB * 1024 * 1024;
+            const dummyData = new Blob([new Uint8Array(size)], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(dummyData);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dummy-data.bin';
+            a.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Easter egg for long sessions
+        setInterval(() => {
+            if (isRunning && parseFloat(timeElapsedEl.textContent) >= 30) {
+                console.log("You're really dedicated to wasting data! Here's a virtual cookie 🍪");
+            }
+        }, 30000);
+    </script>
+</body>
+  </html>
